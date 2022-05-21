@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/olga/PycharmProjects/MiraApp/main.py", line 226, in <module>
+    import six.moves.urllib
+ModuleNotFoundError: No module named 'six'
