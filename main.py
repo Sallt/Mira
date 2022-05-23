@@ -64,9 +64,8 @@ class MobileApp(MDApp):
         #
         # return self.screen
 
-    # def _finish_init(self, dt):
-    #     self.grid = self.ids.grid
-    #     # etc
+    def save_info_class(self):
+        return
 
     def change_screen(self, scr_name):
         self.root.current = scr_name
@@ -96,20 +95,6 @@ class MobileApp(MDApp):
         #     # if kv_files == 'bugreporter.kv':
         #     #     continue
         #     Builder.load_file('{}/{}'.format(dir_kv_files, kv_file))
-
-    def checkbox_click(self, instance, value, topping):
-        if value == True:
-            CreateClass.checks.append(topping)
-            tops = ''
-            for x in CreateClass.checks:
-                tops = f'{tops} {x}'
-            self.ids.output_label2.text = f'You Selected: {tops}'
-        else:
-            CreateClass.checks.remove(topping)
-            tops = ''
-            for x in CreateClass.checks:
-                tops = f'{tops} {x}'
-            self.ids.output_label2.text = f'You Selected: {tops}'
 
     def choice_avatar_class(self):
         return
@@ -229,7 +214,21 @@ class EmptyScreen(FloatLayout):
 
 
 class CreateClass(BoxLayout):
-    pass
+    checks = []
+
+    def checkbox_click(self, instance, value, topping):
+        if value == True:
+            CreateClass.checks.append(topping)
+            tops = ''
+            for x in CreateClass.checks:
+                tops = f'{tops} {x}'
+            # self.ids.output_label2.text = f'You Selected: {tops}'
+        else:
+            CreateClass.checks.remove(topping)
+            tops = ''
+            for x in CreateClass.checks:
+                tops = f'{tops} {x}'
+            # self.ids.output_label2.text = f'You Selected: {tops}'
 
 
 class CreateSet(BoxLayout):
