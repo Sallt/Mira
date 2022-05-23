@@ -40,7 +40,7 @@ class MobileApp(MDApp):
         self.theme_cls.material_style = "M2"
         self.window.size = (400, 740)
         # return self.load_kv_files()
-        Builder.load_file('libs/uix/kv/startscreen.kv')
+        # Builder.load_file('libs/uix/kv/startscreen.kv')
         # self.screen = StartScreen()
         # self.manager_tab_classes = self.screen.ids.sm_tab_classes
 
@@ -48,13 +48,10 @@ class MobileApp(MDApp):
         # return Builder.load_file('/Users/olga/PycharmProjects/Mira/libs/uix/kv/startscreen.kv')
         # return kv
 
-        sm = Manager()
-        sm.add_widget(Screen1(name='empty'))
-        sm.add_widget(Screen2(name='cr_class'))
+        # sm = Manager()
+        # sm.add_widget(Screen1(name='empty'))
+        # sm.add_widget(Screen2(name='cr_class'))
         return kv
-
-    def save_info_class(self):
-        return
 
     def change_screen(self, scr_name):
         self.root.current = scr_name
@@ -72,13 +69,16 @@ class MobileApp(MDApp):
         #     Builder.load_file('{}/{}'.format(dir_kv_files, kv_file))
 
     def show_form_create_class(self):
-        pass
+        self.root.current = "cr_class"
 
     def show_form_create_set(self):
-        pass
+        self.root.current = "cr_set"
 
     def choice_avatar_class(self):
         return
+
+    def choice_question_image(self):
+        pass
 
     def add_screens(self, name_screen, screen_manager, new_screen):
         # screen = Screen(name=name_screen)  # cоздаем новый экран
@@ -115,6 +115,15 @@ class MobileApp(MDApp):
     #             self.empty_screen_sets.ids.label.text = \
     #                 data.string_lang_not_sets
     #             self.empty_screen_sets.ids.float_act_btn.disabled = False
+
+    def save_info_class(self):
+        return
+
+    def save_question(self):
+        pass
+
+    def save_info_set(self):
+        pass
 
     def events_program(self, *args):
         # if len(args) == 2:  # нажата ссылка
@@ -217,7 +226,21 @@ class CreateClass(BoxLayout):
 
 
 class CreateSet(BoxLayout):
-    pass
+    checks = []
+
+    def checkbox_click(self, instance, value, topping):
+        if value == True:
+            CreateClass.checks.append(topping)
+            tops = ''
+            for x in CreateClass.checks:
+                tops = f'{tops} {x}'
+            # self.ids.output_label2.text = f'You Selected: {tops}'
+        else:
+            CreateClass.checks.remove(topping)
+            tops = ''
+            for x in CreateClass.checks:
+                tops = f'{tops} {x}'
+            # self.ids.output_label2.text = f'You Selected: {tops}'
 
 
 class DisplayScores(BoxLayout):
