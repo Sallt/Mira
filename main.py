@@ -70,6 +70,7 @@ class MobileApp(MDApp):
 
     def show_form_create_class(self):
         self.root.current = "cr_class"
+        return
 
     def show_form_create_set(self):
         self.root.current = "cr_set"
@@ -143,28 +144,27 @@ class MobileApp(MDApp):
         #     self.show_about()
         # elif event == 'Home':
         #     self.a()
-
         return True
 
     def on_pause(self):
         # Ставит приложение на 'паузу' при выходе из него. В противном случае запускает программу заново
         return True
 
-    # def back_screen(self, event):
-    #     # Менеджер экранов.
-    #
-    #     # Нажата BackKey на главном экране.
-    #     if event in (1001, 27):
-    #         if self.current_tab == 'classes':
-    #             if self.manager_tab_classes.current == 'create_class':
-    #                 if self.manager_tab_classes.has_screen('class_list'):
-    #                     self.manager_tab_classes.current = 'class_list'
-    #                     self._clear_form_create_class()
-    #                 else:
-    #                     self.manager_tab_classes.current = 'empty_classes_list'
-    #             else:
-    #                 self.exit_program()
-    #                 return
+    def back_screen(self, event):
+        # # Менеджер экранов.
+        #
+        # # Нажата BackKey на главном экране.
+        # if event in (1001, 27):
+        #     if self.current_tab == 'classes':
+        #         if self.manager_tab_classes.current == 'create_class':
+        #             if self.manager_tab_classes.has_screen('class_list'):
+        #                 self.manager_tab_classes.current = 'class_list'
+        #                 self._clear_form_create_class()
+        #             else:
+        #                 self.manager_tab_classes.current = 'empty_classes_list'
+        #         else:
+        #             self.exit_program()
+        return
 
     def exit_program(self, *args):
         # def close_dialog():
@@ -207,7 +207,7 @@ class EmptyScreen(FloatLayout):
     disabled = BooleanProperty()
 
 
-class CreateClass(BoxLayout):
+class CreateClass(Screen):
     checks = []
 
     def checkbox_click(self, instance, value, topping):
@@ -225,7 +225,7 @@ class CreateClass(BoxLayout):
             # self.ids.output_label2.text = f'You Selected: {tops}'
 
 
-class CreateSet(BoxLayout):
+class CreateSet(Screen):
     checks = []
 
     def checkbox_click(self, instance, value, topping):
@@ -243,20 +243,8 @@ class CreateSet(BoxLayout):
             # self.ids.output_label2.text = f'You Selected: {tops}'
 
 
-class DisplayScores(BoxLayout):
-    pass
-
-
-class Screen1(Screen):
-    pass
-
-
-class Screen2(Screen):
-    pass
-
-
-class Manager(ScreenManager):
-    pass
+# class DisplayScores(BoxLayout):
+#     pass
 
 
 class WindowManager(ScreenManager):
