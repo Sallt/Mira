@@ -31,58 +31,33 @@ class MobileApp(MDApp):
         # self.open_exit_dialog = None
         # self.screen_add_groups = None  # kivy.lang.builder.AddContactAddGroups
         # self.data = data
-        self.current_tab = 'classes'
+        # self.current_tab = 'classes'
 
     def build(self):
         self.title = "Опросник Мира"
         self.icon = 'data/images/logo.png'
         self.theme_cls.primary_palette = "Teal"
         self.theme_cls.material_style = "M2"
-        self.window.size = (400, 1200)
+        self.window.size = (400, 740)
         # return self.load_kv_files()
-        # Builder.load_file('libs/uix/kv/startscreen.kv')
+        Builder.load_file('libs/uix/kv/startscreen.kv')
         # self.screen = StartScreen()
         # self.manager_tab_classes = self.screen.ids.sm_tab_classes
 
         kv = Builder.load_file('libs/uix/kv/startscreen.kv')
         # return Builder.load_file('/Users/olga/PycharmProjects/Mira/libs/uix/kv/startscreen.kv')
+        # return kv
+
+        sm = Manager()
+        sm.add_widget(Screen1(name='empty'))
+        sm.add_widget(Screen2(name='cr_class'))
         return kv
-        # return self.screen
-        # self.screen = self.screen
-        # self.screen = StartScreen(events_callback=self.events_program)
-        # self.manager_tab_classes = self.screen.ids.screen_manager_tab_classes
-        # self.manager_tab_sets = self.screen.ids.screen_manager_tab_sets
-        # self.manager_tab_reports = self.screen.ids.screen_manager_tab_reports
-        # self.manager_tab_scores = self.screen.ids.screen_manager_tab_scores
-        #
-        # self.nav_drawer = NavDrawer(title=data.string_lang_menu)
-        # self._check_existence_classes()
-        # self.info_classes, self.info_sets, self.info_reports, self.info_scores = self._read_data()
-        # self.old_info_sets = self.info_sets
-        # if self.info_classes.__len__():  # Activity со списком контактов
-        #     Clock.schedule_interval(self.load_contacts, 0)
-        #
-        # return self.screen
 
     def save_info_class(self):
         return
 
     def change_screen(self, scr_name):
         self.root.current = scr_name
-
-    def show_form_create_class(self):
-        # sm = ScreenManager(transition = RiseInTransition())
-        # sm.add_widget(EmptyScreen(name='empty'))
-        # sm.add_widget(CreateClass(name='cr_class'))
-        # sm.switch_to(EmptyScreen)
-        # return sm
-
-        # self.manager_tab_classes.current = 'create_class'
-        # self._form_create_contact = self.manager_tab_classes.current_screen.children[0]
-        return CreateClass()
-
-    def show_form_create_set(self):
-        return
 
     def choose_class(self):
         print("you've tried to choose between unexistent classes !")
@@ -95,6 +70,12 @@ class MobileApp(MDApp):
         #     # if kv_files == 'bugreporter.kv':
         #     #     continue
         #     Builder.load_file('{}/{}'.format(dir_kv_files, kv_file))
+
+    def show_form_create_class(self):
+        pass
+
+    def show_form_create_set(self):
+        pass
 
     def choice_avatar_class(self):
         return
@@ -207,6 +188,10 @@ class QuizScreen(Screen):
 
 
 class EmptyScreen(FloatLayout):
+
+    def show_form_create_class(self):
+        pass
+
     image = StringProperty()
     text = StringProperty()
     callback = ObjectProperty()
@@ -236,6 +221,18 @@ class CreateSet(BoxLayout):
 
 
 class DisplayScores(BoxLayout):
+    pass
+
+
+class Screen1(Screen):
+    pass
+
+
+class Screen2(Screen):
+    pass
+
+
+class Manager(ScreenManager):
     pass
 
 

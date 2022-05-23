@@ -13,6 +13,7 @@ WindowManager:
     QuizScreen:
 
 <StartScreen>:
+    id: root_scr
     name: 'start'
     BoxLayout:
         orientation: 'vertical'
@@ -44,18 +45,14 @@ WindowManager:
                         text: 'классы'
                         id: classes
                         ScreenManager:
-                            id: sm_tab_classes
                             Screen:
-                                name: 'create_class'
-                                CreateClass:
-                            Screen:
-                                name: 'empty_classes_list'
                                 EmptyScreen:
                                     image: 'account-multiple-outline'
                                     text: 'Список классов пуст\n\nДобавьте классы, нажав кнопку ниже'
                                     callback: app.show_form_create_class
                                     disabled: False
-
+                            Screen:
+                                CreateClass:
 
                     MDBottomNavigationItem:
                         name: 'q_sets'
@@ -121,6 +118,7 @@ WindowManager:
                                 text: '\n\n\n\n\n\n\n\n\n\n\nДля просмотра журналов нажмите иконку вкладки повторно'
 
 <ScoresheetScreen>:
+    id: scores_scr
     name: 'scoresheet'
     BoxLayout:
         orientation: 'vertical'
@@ -163,6 +161,7 @@ WindowManager:
                         right_action_items: [['arrow-right-bold-circle-outline', lambda x: x, "следующий"]]
 
 <QuizScreen>:
+    id:  quiz_scr
     name: 'quiz'
     BoxLayout:
         orientation: 'vertical'
@@ -208,7 +207,9 @@ WindowManager:
         on_release: root.callback()
 
 <CreateClass>:
+    id: cr_class
     name: 'cr_class'
+
     orientation: 'vertical'
     FloatLayout:
         size_hint: 1, .3
