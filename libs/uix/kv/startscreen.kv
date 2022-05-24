@@ -1,11 +1,14 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MDBottomNavigation kivymd.uix.bottomnavigation.MDBottomNavigation
 #:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
+#:import MDIconButton kivymd.uix.button.MDIconButton
 #:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDTopAppBar kivymd.uix.toolbar.MDTopAppBar
+#:import MDBottomAppBar kivymd.uix.toolbar.MDBottomAppBar
 #:import MDScreen kivymd.uix.screen.MDScreen
 #:import MDLabel kivymd.uix.label.MDLabel
 #:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
+#:import MDCarousel kivymd.uix.carousel.MDCarousel
+#:import MDTextField kivymd.uix.textfield.MDTextField
 
 WindowManager:
     StartScreen:
@@ -24,13 +27,13 @@ WindowManager:
         MDScreen:
             BoxLayout:
                 orientation: 'vertical'
-                MDTopAppBar:
+                MDToolbar:
                     use_overflow: True
                     type: 'top'
                     title: "~ Мира ~"
                     anchor_title: 'left'
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
-                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: x, 'назад'], ['information-outline', lambda x: x, 'информация']]
+                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад'], ['puzzle', lambda x: app.change_screen('quiz'), 'запустить тест']]
 
                 MDBottomNavigation:
                     id: tabs
@@ -43,7 +46,7 @@ WindowManager:
 
                     MDBottomNavigationItem:
                         name: 'classes'
-                        icon: 'account-multiple-outline'
+                        icon: "account-multiple-outline"
                         text: 'классы'
                         id: classes
                         ScreenManager:
@@ -59,7 +62,7 @@ WindowManager:
 
                     MDBottomNavigationItem:
                         name: 'q_sets'
-                        icon: 'head-question-outline'
+                        icon: "head-question-outline"
                         text: 'наборы'
                         id: sets
                         ScreenManager:
@@ -86,7 +89,7 @@ WindowManager:
                                 color: get_color_from_hex("#42636b")
                                 text_size: self.size
                                 halign: 'center'
-                                text: 'Просмотр данных о прохождении классом \"____\" теста \"____\"'
+                                text: 'Просмотр данных о прохождении классом \"  \" теста \"  \"'
                             FloatLayout:
                                 size_hint: 1, .9
                                 orientation: 'horizontal'
@@ -135,13 +138,13 @@ WindowManager:
             BoxLayout:
                 orientation: 'vertical'
 
-                MDTopAppBar:
+                MDToolbar:
                     use_overflow: True
                     type: 'top'
-                    title: "~ Мира ~"
+                    title: "~ Журналы ~"
                     anchor_title: 'left'
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
-                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: x, 'назад'], ['information-outline', lambda x: x, 'информация']]
+                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад'], ['information-outline', lambda x: x, 'информация']]
 
                 BoxLayout:
                     ScreenManager:
@@ -156,7 +159,8 @@ WindowManager:
                             name: 'display_scores'
 
                 MDBottomAppBar:
-                    MDTopAppBar:
+
+                    MDToolbar:
                         use_overflow: True
                         icon: "account-switch-outline"
                         on_action_button: app.choose_class()
@@ -176,14 +180,33 @@ WindowManager:
         MDScreen:
             BoxLayout:
                 orientation: 'vertical'
-                MDTopAppBar:
+                MDToolbar:
                     use_overflow: True
                     type: 'top'
-                    title: "~ Запущен тест ~"
-                    anchor_title: 'left'
+                    title: "~ тест ~"
+                    anchor_title: 'center'
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
-                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: x, 'назад']]
+                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад']]
                 BoxLayout:
+                    size_hint: 1, .8
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        MDFloatingActionButton:
+                            id: st_quiz_btn
+                            icon: 'puzzle'
+                            size_hint: None, None
+                            size: dp(56), dp(56)
+                            opposite_colors: True
+                            elevation_normal: 8
+                            on_release: app.start_quiz()
+                    MDCarousel:
+                        direction: 'right'
+
+                BoxLayout:
+                    size_hint: 1, .1
+                    pos_hint: {'central_y': 0}
+                    background_color: get_color_from_hex("#4bb760")
 
 <EmptyScreen>:
     name: 'empty'
@@ -223,15 +246,16 @@ WindowManager:
         MDScreen:
             BoxLayout:
                 orientation: 'vertical'
-                MDTopAppBar:
+                MDToolbar:
                     use_overflow: True
                     type: 'top'
                     title: "~ Создание класса ~"
                     anchor_title: 'center'
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
+                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад']]
 
                 BoxLayout:
-                    size_hint: 0.8, 1
+                    size_hint: 1, .9
                     pos_hint: {'center_y': .2}
                     orientation: 'vertical'
                     FloatLayout:
@@ -241,13 +265,12 @@ WindowManager:
                             pos_hint: {'center_y': .5}
                             opacity: 0.2
                             source: 'data/images/account-multi-outline.png'
-                        MDFloatingActionButton:
-                            icon: 'plus'
+                        MDFillRoundFlatButton:
                             size_hint: None, None
-                            size: dp(56), dp(56)
+                            size: dp(150), dp(56)
+                            text: "добавить изображение"
                             opposite_colors: True
-                            elevation_normal: 8
-                            pos_hint: {'center_x': .9, 'center_y': .25}
+                            pos_hint: {'center_x': .77, 'center_y': .15}
                             background_color: get_color_from_hex("#4bb760")
                             background_color_down: get_color_from_hex("#3b934c")
                             on_release: app.choice_avatar_class()
@@ -255,15 +278,13 @@ WindowManager:
                     BoxLayout:
                         orientation: 'vertical'
                         padding: 5, 5
-                        size_hint: 1, .6
+                        size_hint: 1, .7
                         BoxLayout:
                             size_hint: 1, .1
                             orientation: 'horizontal'
                             BoxLayout:
-                                size_hint: 0.02, 1
+                                size_hint: 0.01, 1
                             MDTextField:
-                                icon_left: 'account-group'
-                                icon_left_color_focus: 0, .4, 0, 1
                                 id: name_field
                                 hint_text: "Название Класса"
                                 hint_text_mode: "on_focus"
@@ -276,34 +297,36 @@ WindowManager:
                                 multiline: False
                                 mode: "rectangle"
                                 fill_color_normal: 0, .4, 0, .2
+                                icon_left: 'account-group'
+                                icon_left_color_focus: get_color_from_hex("#006600")
 
                         BoxLayout:
                             size_hint: 1, .6
                             MDTextField:
-                                icon_left: 'account-multiple-plus'
-                                icon_left_color_focus: 0, 0.4, 0, 1
                                 id: stud_list_field
+                                size_hint: 1, 0.95
+                                icon_left: "account-multiple-plus"
+                                icon_left_color_focus: get_color_from_hex("#006600")
                                 hint_text: "Введите список студентов, \nразделяя учеников переносом строки"
                                 hint_text_mode: "on_focus"
                                 hint_text_color_normal: 0, 0, 0, 0.8
-                                hint_text_color_focus: 0, 0.3, 0, 0.85
-                                size_hint: 1, 0.95
-                                text_color_normal: 0, 0, 0, 0.6
-                                text_color_focus: 0, 0.25, 0, 1
+                                hint_text_color_focus: get_color_from_hex("#266826")
+                                text_color_normal: 0, 0, 0, 0.7
+                                text_color_focus: get_color_from_hex("#004000")
                                 multiline: True
                                 mode: "fill"
-                                max_height: "220dp"
-                                fill_color_normal: 0, .4, 0, .2
+                                fill_color_normal: get_color_from_hex("#b3d1b3")
                                 fill_color_focus: 0, .4, 0, .12
+                                max_height: "220dp"
+
 
                         BoxLayout:
                             size_hint: 1, .25
                             orientation: 'horizontal'
                             MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
                                 icon: 'sort-alphabetical-variant'
-                                text: "Выберите вид сортировки"
                                 color: 0, 0.3, 0.6, 1
-                                disabled: True
 
                             GridLayout:
                                 selected_color: 0, 0.3, 0, 1
@@ -340,7 +363,7 @@ WindowManager:
                             size_hint: 1,.1
                     AnchorLayout:
                         anchor_x: 'right'
-                        pos_hint: {'center_y': .2}
+                        padding: [0, 0, 15, 70]
                         size_hint: 1, None
                         height: dp(40)
                         MDRectangleFlatButton:
@@ -351,14 +374,12 @@ WindowManager:
                             md_bg_color: 0, 0.5, 0, .25
                             text: '[b]СОЗДАТЬ КЛАСС[/b]'
                             on_release: app.save_info_class()
+
                 MDBottomAppBar:
-                    MDTopAppBar:
-                        id: bottom_cr_class
-                        use_overflow: True
-                        icon: "emoticon-poop"
-                        type: 'bottom'
-                        panel_color: get_color_from_hex("#4bb760")
-                        right_action_items: [['arrow-left-bold-circle-outline', lambda x: x, 'назад']]
+                    BoxLayout:
+                        color: get_color_from_hex("#4bb760")
+                        background_color: get_color_from_hex("#4bb760")
+                        minimum_size: (root.width, 0.05*root.height)
 
 <CreateSet>:
     id: cr_set
@@ -370,12 +391,13 @@ WindowManager:
         MDScreen:
             BoxLayout:
                 orientation: 'vertical'
-                MDTopAppBar:
+                MDToolbar:
                     use_overflow: True
                     type: 'top'
                     title: "~ Создание теста ~"
                     anchor_title: 'center'
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
+                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад']]
 
                 BoxLayout:
                     orientation: 'vertical'
@@ -404,14 +426,12 @@ WindowManager:
                             pos_hint: {'center_x': .45, 'center_y': .4}
                             source: 'data/images/brush.png'
                             opacity: .2
-
-                        MDFloatingActionButton:
-                            icon: 'plus'
+                        MDFillRoundFlatButton:
                             size_hint: None, None
-                            size: dp(56), dp(56)
+                            size: dp(150), dp(56)
+                            text: "добавить изображение"
                             opposite_colors: True
-                            elevation_normal: 8
-                            pos_hint: {'center_x': .9, 'center_y': .2}
+                            pos_hint: {'center_x': .77, 'center_y': .15}
                             background_color: get_color_from_hex("#4bb760")
                             background_color_down: get_color_from_hex("#3b934c")
                             on_release: app.choice_question_image()
@@ -422,6 +442,7 @@ WindowManager:
                         size_hint: .9, .7
                         pos_hint: {'center_x': .5}
                         BoxLayout:
+                            size_hint: 1, .2
                             MDTextField:
                                 pos_hint: {'center_x': .5}
                                 icon_left: 'pencil-plus-outline'
@@ -440,9 +461,10 @@ WindowManager:
                                 fill_color_normal: 0, .4, 0, .2
 
                         BoxLayout:
+                            size_hint: 1, .2
                             orientation: 'horizontal'
                             MDTextField:
-                                icon_left: 'alpha-a-box-outline'
+                                icon_left: 'data/images/icon_a.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
                                 id: answer_a
                                 hint_text: "Введите вариант ответа 'А'"
@@ -461,9 +483,10 @@ WindowManager:
                                 size: "48dp", "48dp"
                                 pos_hint: {'center_x': .5, 'center_y': .5}
                         BoxLayout:
+                            size_hint: 1, .2
                             orientation: 'horizontal'
                             MDTextField:
-                                icon_left: 'alpha-b-box-outline'
+                                icon_left: 'data/images/icon_b.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
                                 id: answer_b
                                 hint_text: "Введите вариант ответа 'Б'"
@@ -483,9 +506,10 @@ WindowManager:
                                 size: "48dp", "48dp"
                                 pos_hint: {'center_x': .5, 'center_y': .5}
                         BoxLayout:
+                            size_hint: 1, .2
                             orientation: 'horizontal'
                             MDTextField:
-                                icon_left: 'alpha-c-box-outline'
+                                icon_left: 'data/images/icon_c.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
                                 id: answer_c
                                 hint_text: "Введите вариант ответа 'В'"
@@ -504,9 +528,10 @@ WindowManager:
                                 size: "48dp", "48dp"
                                 pos_hint: {'center_x': .5, 'center_y': .5}
                         BoxLayout:
+                            size_hint: 1, .2
                             orientation: 'horizontal'
                             MDTextField:
-                                icon_left: 'alpha-d-box-outline'
+                                icon_left: 'data/images/icon_d.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
                                 id: answer_d
                                 hint_text: "Введите вариант ответа 'Г'"
@@ -524,12 +549,14 @@ WindowManager:
                                 size_hint: None, None
                                 size: "48dp", "48dp"
                                 pos_hint: {'center_x': .5, 'center_y': .5}
+                        BoxLayout:
+                            size_hint: 1, 0.1
 
                     AnchorLayout:
                         size_hint: 1, None
                         anchor_x: 'right'
                         anchor_y: 'bottom'
-                        pos_hint: {'center_x': .49, 'center_y': .15}
+                        padding: [0, 0, 15, 50]
                         AnchorLayout:
                             size_hint: 1, None
                             height: dp(40)
@@ -552,11 +579,7 @@ WindowManager:
                                 md_bg_color: 0, 0.5, 0, .25
                                 text: '[b]СОЗДАТЬ НАБОР[/b]'
                                 on_release: app.save_info_set()
+
                 MDBottomAppBar:
-                    MDTopAppBar:
-                        id: bottom_cr_set
-                        use_overflow: True
-                        icon: "emoticon-poop"
-                        type: 'bottom'
-                        panel_color: get_color_from_hex("#4bb760")
-                        right_action_items: [['arrow-left-bold-circle-outline', lambda x: x, 'назад']]
+                    BoxLayout:
+                        minimum_size: (root.width, 0.01*root.height)
