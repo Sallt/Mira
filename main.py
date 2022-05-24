@@ -271,7 +271,15 @@ class QuizCarousel(BoxLayout):
     def next_question(self):
         self.image = ''
         self.q_text = ''
+        renewed = []
+
+        for ch in self.children:
+            renewed.append(ch)
+
         self.clear_widgets()
+
+        for ch in renewed:
+            self.add_widget(ch)
         # self.answer_a, self.answer_b, self.answer_c, self.answer_d = ''
 
 
