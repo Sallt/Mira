@@ -189,30 +189,88 @@ WindowManager:
                     right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад']]
                 BoxLayout:
                     size_hint: 1, .8
-                    AnchorLayout:
-                        anchor_x: 'center'
-                        anchor_y: 'center'
-                        MDFloatingActionButton:
-                            id: st_quiz_btn
-                            icon: 'puzzle'
-                            size_hint: None, None
-                            size: dp(56), dp(56)
-                            opposite_colors: True
-                            elevation_normal: 8
-                            on_release: app.start_quiz()
-                    MDCarousel:
-                        direction: 'right'
+
+                    QuizCarousel:
 
                 BoxLayout:
-                    size_hint: 1, .1
+                    size_hint: 1, .01
                     pos_hint: {'central_y': 0}
                     background_color: get_color_from_hex("#4bb760")
+
+<QuizCarousel>:
+    id: quiz_act
+    name: 'quiz_act'
+    orientation: 'vertical'
+
+    MDRoundFlatButton:
+        pos_hint:{'center_x': .5, 'center_y': 0}
+        id: set_name
+        md_bg_color_disabled: get_color_from_hex("#4bb760")
+        disabled_color:  1,1,1,1
+        text: root.set_n
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        disabled: True
+    Image:
+        size_hint: 1, .25
+        source: root.image
+        opacity: .3
+    MDLabel:
+        size_hint: 1, .15
+        id: question
+        font_style: 'H6'
+        theme_text_color: "Custom"
+        text_color: get_color_from_hex("#42636b")
+        text: root.q_text
+        halign: 'center'
+    BoxLayout:
+        id: answers
+        orientation: 'vertical'
+        size_hint: .9, .4
+        pos_hint: {'center_x': .5}
+        padding: [2, 2, 2, 2]
+        MDRectangleFlatIconButton:
+            size_hint: 1, .25
+            icon: "data/images/icon_a.png"
+            text: root.answer_a
+            line_width: 1.5
+            icon_color: 0, .5, 0, 1
+        MDRectangleFlatIconButton:
+            size_hint: 1, .25
+            icon: "data/images/icon_b.png"
+            text: root.answer_b
+            line_width: 1.5
+            icon_color: 0, .5, 0, 1
+        MDRectangleFlatIconButton:
+            size_hint: 1, .25
+            icon: "data/images/icon_c.png"
+            text: root.answer_c
+            line_width: 1.5
+            icon_color: 0, .5, 0, 1
+        MDRectangleFlatIconButton:
+            size_hint: 1, .25
+            icon: "data/images/icon_d.png"
+            text: root.answer_d
+            line_width: 1.5
+            icon_color: 0, .5, 0, 1
+    AnchorLayout:
+        size_hint: 1, None
+        height: dp(60)
+        MDFloatingActionButton:
+            id: cam_button
+            icon: 'camera-enhance'
+            size_hint: None, None
+            size: dp(56), dp(56)
+            opposite_colors: True
+            elevation_normal: 8
+            pos_hint: {'center_x': .5, 'center_y': 0}
+            on_release: root.scan_class()
 
 <EmptyScreen>:
     name: 'empty'
     id: empty_screen
     MDIconButton:
-        icon_size: "150sp"
+        icon_size: "500sp"
         icon: root.image
         pos_hint: {"center_x": .695, "center_y": .6}
         opacity: .1
@@ -305,6 +363,7 @@ WindowManager:
                             MDTextField:
                                 id: stud_list_field
                                 size_hint: 1, 0.95
+                                theme_text_color: "Custom"
                                 icon_left: "account-multiple-plus"
                                 icon_left_color_focus: get_color_from_hex("#006600")
                                 hint_text: "Введите список студентов, \nразделяя учеников переносом строки"
@@ -318,7 +377,6 @@ WindowManager:
                                 fill_color_normal: get_color_from_hex("#b3d1b3")
                                 fill_color_focus: 0, .4, 0, .12
                                 max_height: "220dp"
-
 
                         BoxLayout:
                             size_hint: 1, .25
@@ -369,8 +427,6 @@ WindowManager:
                         MDRectangleFlatButton:
                             id: button_ok
                             line_width: 2
-                            line_color: 0, 0.5, 0, 1
-                            text_color: 0, 0.5, 0, 1
                             md_bg_color: 0, 0.5, 0, .25
                             text: '[b]СОЗДАТЬ КЛАСС[/b]'
                             on_release: app.save_info_class()
@@ -448,6 +504,7 @@ WindowManager:
                                 icon_left: 'pencil-plus-outline'
                                 icon_left_color_focus: 0, 0.4, 0, 1
                                 id: question_field
+                                theme_text_color: "Custom"
                                 hint_text: "Введите вопрос"
                                 hint_text_mode: "on_focus"
                                 hint_text_color_normal: 0, 0, 0, 0.8
@@ -563,8 +620,8 @@ WindowManager:
                             MDRectangleFlatButton:
                                 id: button_next
                                 line_width: 2
-                                line_color: 0, 0.5, 0, 1
-                                text_color: 0, 0.5, 0, 1
+                                line_color: 0, 0.5, 0, .7
+                                text_color: 0, 0.5, 0, .7
                                 text: '[b]ДАЛЬШЕ[/b]'
                                 on_release: app.save_question()
                         AnchorLayout:
@@ -574,8 +631,6 @@ WindowManager:
                             MDRectangleFlatButton:
                                 id: button_ok
                                 line_width: 2
-                                line_color: 0, 0.5, 0, 1
-                                text_color: 0, 0.5, 0, 1
                                 md_bg_color: 0, 0.5, 0, .25
                                 text: '[b]СОЗДАТЬ НАБОР[/b]'
                                 on_release: app.save_info_set()

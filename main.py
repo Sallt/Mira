@@ -5,6 +5,7 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.screenmanager import RiseInTransition
 from kivymd.uix.navigationdrawer import MDNavigationDrawer
+from kivymd.uix.carousel import MDCarousel
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
 from kivy.core.window import Window
 from kivy.clock import Clock
@@ -126,6 +127,9 @@ class MobileApp(MDApp):
     def save_info_set(self):
         pass
 
+    def start_quiz(self):
+        pass
+
     def events_program(self, *args):
         # if len(args) == 2:  # нажата ссылка
         #     event = args[1]
@@ -197,10 +201,6 @@ class QuizScreen(Screen):
 
 
 class EmptyScreen(FloatLayout):
-
-    def show_form_create_class(self):
-        pass
-
     image = StringProperty()
     text = StringProperty()
     callback = ObjectProperty()
@@ -243,8 +243,36 @@ class CreateSet(Screen):
             # self.ids.output_label2.text = f'You Selected: {tops}'
 
 
-# class DisplayScores(BoxLayout):
-#     pass
+class QuizCarousel(BoxLayout):
+    cl_name = StringProperty()
+    # set_n = StringProperty()
+    # image = StringProperty()
+    # q_text = StringProperty()
+    #
+    # answer_a = StringProperty()
+    # answer_b = StringProperty()
+    # answer_c = StringProperty()
+    # answer_d = StringProperty()
+    set_n = "Тригонометрия как она есть"
+    image = 'data/images/tumbleweed.png'
+    q_text = "Сколько граней у тетраедра?"
+
+    answer_a = "одна"
+    answer_b = "четыречетыречетыречетыречетыречетыречетыречетыречетыре"
+    answer_c = "шесть"
+    answer_d = "три"
+
+    def scan_class(self):
+        # считывание данных
+        # + сохранение данных, считанных камерой
+
+        self.next_question()
+
+    def next_question(self):
+        self.image = ''
+        self.q_text = ''
+        self.clear_widgets()
+        # self.answer_a, self.answer_b, self.answer_c, self.answer_d = ''
 
 
 class WindowManager(ScreenManager):
