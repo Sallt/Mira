@@ -245,22 +245,25 @@ class CreateSet(Screen):
 
 class QuizCarousel(BoxLayout):
     cl_name = StringProperty()
-    # set_n = StringProperty()
-    # image = StringProperty()
-    # q_text = StringProperty()
-    #
-    # answer_a = StringProperty()
-    # answer_b = StringProperty()
-    # answer_c = StringProperty()
-    # answer_d = StringProperty()
-    set_n = "Тригонометрия как она есть"
-    image = 'data/images/tumbleweed.png'
-    q_text = "Сколько граней у тетраедра?"
+    set_n = StringProperty()
+    image = StringProperty()
+    q_text = StringProperty()
 
-    answer_a = "одна"
-    answer_b = "четыречетыречетыречетыречетыречетыречетыречетыречетыре"
-    answer_c = "шесть"
-    answer_d = "три"
+    answer_a = StringProperty()
+    answer_b = StringProperty()
+    answer_c = StringProperty()
+    answer_d = StringProperty()
+
+
+    def parse_set(self):
+        self.set_n = "Тригонометрия как она есть"
+        self.image = "data/images/tumbleweed.png"
+        self.q_text = "Сколько граней у тетраедра?"
+        self.answer_a = "-одна-"
+        self.answer_b = "-шесть-"
+        self.answer_c = "-четыре-"
+        self.answer_d = "-три-"
+        self.quest_count = 2
 
     def scan_class(self):
         # считывание данных
@@ -269,18 +272,30 @@ class QuizCarousel(BoxLayout):
         self.next_question()
 
     def next_question(self):
-        self.image = ''
-        self.q_text = ''
+        self.image = "data/images/brush.png"
+        self.q_text = "Смесь каких цветов даёт пурпурный оттенок?"
+        self.answer_a = "-синий, красный-"
+        self.answer_b = "-желтый, зеленый-"
+        self.answer_c = "-оранжевый, голубой, розовый-"
+        self.answer_d = "-красный, белый, голубой-"
+        self.quest_count = self.quest_count - 1
+
+        # if self.quest_count == 0:
+            # self.return_home()
+
         renewed = []
 
         for ch in self.children:
             renewed.append(ch)
 
         self.clear_widgets()
+        renewed.reverse()
 
         for ch in renewed:
             self.add_widget(ch)
-        # self.answer_a, self.answer_b, self.answer_c, self.answer_d = ''
+
+    # def return_home(self):
+       # app.change_screen('start')
 
 
 class WindowManager(ScreenManager):

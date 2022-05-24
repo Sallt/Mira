@@ -186,11 +186,11 @@ WindowManager:
                     title: "~ тест ~"
                     anchor_title: 'center'
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
-                    right_action_items: [['arrow-left-bold-circle-outline', lambda x: app.back_screen(x), 'назад']]
+                    right_action_items: [['arrow-right-drop-circle-outline', lambda x: quiz_act.parse_set(), 'запуск теста']]
                 BoxLayout:
                     size_hint: 1, .8
-
                     QuizCarousel:
+                        id: quiz_act
 
                 BoxLayout:
                     size_hint: 1, .01
@@ -198,11 +198,10 @@ WindowManager:
                     background_color: get_color_from_hex("#4bb760")
 
 <QuizCarousel>:
-    id: quiz_act
     name: 'quiz_act'
     orientation: 'vertical'
 
-    MDRoundFlatButton:
+    MDRectangleFlatButton:
         pos_hint:{'center_x': .5, 'center_y': 0}
         id: set_name
         md_bg_color_disabled: get_color_from_hex("#4bb760")
