@@ -11,12 +11,12 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 # from kivymd.uix.screen import MDScreen
 # from akivymd import *
-# from kivy.uix.widget import Widget
+from kivy.uix.widget import Widget
 # from libs import programdata as data
-# from libs.uix.startscreen import StartScreen
 # from libs.uix.dialogue import dialog
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.label import MDLabel
 
 
 class MobileApp(MDApp):
@@ -280,19 +280,20 @@ class QuizCarousel(BoxLayout):
         self.answer_d = "-красный, белый, голубой-"
         self.quest_count = self.quest_count - 1
 
-        # if self.quest_count == 0:
+        if self.quest_count == 0:
             # self.return_home()
-
-        renewed = []
-
-        for ch in self.children:
-            renewed.append(ch)
-
-        self.clear_widgets()
-        renewed.reverse()
-
-        for ch in renewed:
-            self.add_widget(ch)
+            self.clear_widgets()
+            box = BoxLayout()
+            box.add_widget(MDLabel(text='Вы завершили прохождение теста!'))
+            self.add_widget(box)
+        else:
+            renewed = []
+            for ch in self.children:
+                renewed.append(ch)
+            self.clear_widgets()
+            renewed.reverse()
+            for ch in renewed:
+                self.add_widget(ch)
 
     # def return_home(self):
        # app.change_screen('start')
