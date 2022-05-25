@@ -6,7 +6,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.screenmanager import RiseInTransition
 from kivymd.uix.navigationdrawer import MDNavigationDrawer
 from kivymd.uix.carousel import MDCarousel
-from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
+from kivy.properties import ObjectProperty, StringProperty, BooleanProperty, ListProperty, get_color_from_hex
 from kivy.core.window import Window
 from kivy.clock import Clock
 # from kivymd.uix.screen import MDScreen
@@ -17,7 +17,9 @@ from kivy.uix.widget import Widget
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.label import MDLabel
-
+from kivymd.uix.button import MDRectangleFlatButton, MDRectangleFlatIconButton, MDFloatingActionButton
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.core.image import Image
 
 class MobileApp(MDApp):
 
@@ -244,6 +246,9 @@ class CreateSet(Screen):
 
 
 class QuizCarousel(BoxLayout):
+    # def __init__(self):
+    #     self.quiz_canva = self.children
+
     cl_name = StringProperty()
     set_n = StringProperty()
     image = StringProperty()
@@ -253,7 +258,30 @@ class QuizCarousel(BoxLayout):
     answer_b = StringProperty()
     answer_c = StringProperty()
     answer_d = StringProperty()
+    quiz_canva = ListProperty()
+    quest_count = None
 
+    # def set_canvas(self):
+    #     set_name = MDRectangleFlatButton(pos_hint={'center_x': .5, 'center_y': 0}, id='set_name',
+    #                                      md_bg_color_disabled=get_color_from_hex("#4bb760"),
+    #                                      disabled_color=[1, 1, 1, 1], text= self.set_n, theme_text_color="Custom",
+    #                                      text_color=[1, 1, 1, 1], disabled=True)
+    #     img = Image(size_hint=(1, .25), source=self.image, opacity=.3)
+    #     q_txt = MDLabel(size_hint=(1, .15), id="question", font_style='H6', theme_text_color="Custom",
+    #                     text_color=get_color_from_hex("#42636b"), text=self.q_text, halign='center')
+    #     box = BoxLayout(id='answers', orientation='vertical', size_hint=(.9, .4), pos_hint={'center_x': .5})
+    #     answer = MDRectangleFlatIconButton(size_hint=(1, .25), line_width=1.5, icon_color=[0, .5, 0, 1])
+    #     box.add_widget(answer(icon="data/images/icon_a.png", text=self.answer_a))
+    #     box.add_widget(answer(icon="data/images/icon_b.png", text=self.answer_b))
+    #     box.add_widget(answer(icon="data/images/icon_c.png", text=self.answer_c))
+    #     box.add_widget(answer(icon="data/images/icon_d.png", text=self.answer_d))
+    #
+    #     anch = AnchorLayout(size_hint=(1, None), height=60)
+    #     cam = MDFloatingActionButton(id='cam_button', icon='camera-enhance', size_hint=(None, None),
+    #                                  size=(56, 56), opposite_colors=True, elevation_normal=8,
+    #                                  pos_hint={'center_x': .5, 'center_y': 0}, on_release=self.scan_class())
+    #     anch.add_widget(cam)
+    #     self.quiz_canva = [set_name, img, q_txt, box, anch]
 
     def parse_set(self):
         self.set_n = "Тригонометрия как она есть"
@@ -269,34 +297,30 @@ class QuizCarousel(BoxLayout):
         # считывание данных
         # + сохранение данных, считанных камерой
 
+        # if self.children == []:
+        #     self.children = self.quiz_canva
         self.next_question()
 
     def next_question(self):
-        self.image = "data/images/brush.png"
-        self.q_text = "Смесь каких цветов даёт пурпурный оттенок?"
-        self.answer_a = "-синий, красный-"
-        self.answer_b = "-желтый, зеленый-"
-        self.answer_c = "-оранжевый, голубой, розовый-"
-        self.answer_d = "-красный, белый, голубой-"
         self.quest_count = self.quest_count - 1
 
         if self.quest_count == 0:
-            # self.return_home()
             self.clear_widgets()
             box = BoxLayout()
-            box.add_widget(MDLabel(text='Вы завершили прохождение теста!'))
+            box.add_widget(MDLabel(text='Вы завершили прохождение теста!', halign='center'))
             self.add_widget(box)
         else:
-            renewed = []
-            for ch in self.children:
-                renewed.append(ch)
+            self.quiz_canva = self.children
+            self.image = "data/images/brush.png"
+            self.q_text = "Смесь каких цветов даёт пурпурный оттенок?"
+            self.answer_a = "-синий, красный-"
+            self.answer_b = "-желтый, зеленый-"
+            self.answer_c = "-оранжевый, голубой, розовый-"
+            self.answer_d = "-красный, белый, голубой-"
             self.clear_widgets()
-            renewed.reverse()
-            for ch in renewed:
+            self.quiz_canva.reverse()
+            for ch in self.quiz_canva:
                 self.add_widget(ch)
-
-    # def return_home(self):
-       # app.change_screen('start')
 
 
 class WindowManager(ScreenManager):
