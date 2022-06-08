@@ -9,6 +9,7 @@
 #:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
 #:import MDCarousel kivymd.uix.carousel.MDCarousel
 #:import MDTextField kivymd.uix.textfield.MDTextField
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
 
 WindowManager:
     StartScreen:
@@ -68,10 +69,7 @@ WindowManager:
                         ScreenManager:
                             id: sm_tab_sets
                             Screen:
-                                name: "empty_set"
-                                EmptyScreen:
-                                    image: 'folder-search-outline'
-                                    text: 'Вы ещё не создали наборов вопросов'
+                                ShowList:
                                     callback: app.show_form_create_set
                                     disabled: False
                             Screen:
@@ -84,27 +82,34 @@ WindowManager:
                         id: reports
                         BoxLayout:
                             orientation: 'vertical'
-                            Label:
-                                size_hint: 1, .1
-                                color: get_color_from_hex("#42636b")
-                                text_size: self.size
-                                halign: 'center'
-                                text: 'Просмотр данных о прохождении классом \"  \" теста \"  \"'
-                            FloatLayout:
-                                size_hint: 1, .9
+                            BoxLayout:
+                                size_hint: 1, .01
+                            BoxLayout:
+                                size_hint: 1, .05
                                 orientation: 'horizontal'
-                                MDIconButton:
-                                    icon: 'arrow-left-bold-circle'
-                                    pos_hint: {'center_x': .1, 'center_y': .5}
-                                Label:
-                                    size_hint: .8, 1
-                                    pos_hint: {'center_x': .5, 'center_y': .5}
-                                    color: 0, 0, 0, 1
-                                    text: 'Нет данных'
-                                    halign: 'center'
-                                MDIconButton:
-                                    icon: 'arrow-right-bold-circle'
-                                    pos_hint: {'center_x': .9, 'center_y': .5}
+                                padding: [15,0,15,0]
+                                FloatLayout:
+                                    size_hint: .4, .9
+                                    MDRaisedButton:
+                                        pos_hint: {'center_x': .5, 'center_y': .5}
+                                        text: '      класс      '
+                                        on_release: MDDropdownMenu(items=app.items_class).open()
+                                BoxLayout:
+                                    size_hint: .1, 1
+                                FloatLayout:
+                                    size_hint: 0.4, .9
+                                    MDRaisedButton:
+                                        size_hint: None, None
+                                        pos_hint: {'center_x': .5, 'center_y': .5}
+                                        text: 'набор вопросов'
+                                        on_release: MDDropdownMenu(items=app.items_set).open()
+                            BoxLayout:
+                                size_hint: 1, .01
+
+                            MDLabel:
+                                text: "Здесь пусто!\nПройдите тест, чтобы получить отчёт"
+                                halign: 'center'
+                                pos_hint: {'center_x': .5, 'center_y': .5}
 
                     MDBottomNavigationItem:
                         name: 'scoresheet'
@@ -180,6 +185,7 @@ WindowManager:
         MDScreen:
             BoxLayout:
                 orientation: 'vertical'
+
                 MDToolbar:
                     use_overflow: True
                     type: 'top'
@@ -188,7 +194,31 @@ WindowManager:
                     left_action_items: [['home', lambda x: app.change_screen('start'), 'на главную']]
                     right_action_items: [['arrow-right-drop-circle-outline', lambda x: quiz_act.parse_set(), 'запуск теста']]
                 BoxLayout:
-                    size_hint: 1, .8
+                    orientation: 'vertical'
+                    BoxLayout:
+                        size_hint: 1, .01
+                    BoxLayout:
+                        size_hint: 1, .05
+                        orientation: 'horizontal'
+                        padding: [15,0,15,0]
+                        FloatLayout:
+                            size_hint: .4, .9
+                            MDRaisedButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                text: '     8 А     '
+                                on_release: MDDropdownMenu(items=app.items_class).open()
+                        BoxLayout:
+                            size_hint: .1, 1
+                        FloatLayout:
+                            size_hint: 0.4, .9
+                            MDRaisedButton:
+                                size_hint: None, None
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                text: 'Стереометрия'
+                                on_release: MDDropdownMenu(items=app.items_set).open()
+                    BoxLayout:
+                        size_hint: 1, .01
+
                     QuizCarousel:
                         id: quiz_act
 
@@ -201,19 +231,10 @@ WindowManager:
     name: 'quiz_act'
     orientation: 'vertical'
 
-    MDRectangleFlatButton:
-        pos_hint:{'center_x': .5, 'center_y': 0}
-        id: set_name
-        md_bg_color_disabled: get_color_from_hex("#4bb760")
-        disabled_color:  1,1,1,1
-        text: root.set_n
-        theme_text_color: "Custom"
-        text_color: 1,1,1,1
-        disabled: True
     Image:
         size_hint: 1, .25
         source: root.image
-        opacity: .3
+        opacity: .6
     MDLabel:
         size_hint: 1, .15
         id: question
@@ -225,32 +246,40 @@ WindowManager:
     BoxLayout:
         id: answers
         orientation: 'vertical'
-        size_hint: .9, .4
+        size_hint: .9, .35
         pos_hint: {'center_x': .5}
-        MDRectangleFlatIconButton:
+        BoxLayout:
             size_hint: 1, .25
-            icon: "data/images/icon_a.png"
-            text: root.answer_a
-            line_width: 1.5
-            icon_color: 0, .5, 0, 1
-        MDRectangleFlatIconButton:
+            orientation: 'horizontal'
+            MDIconButton:
+                icon: "data/images/icon_a.png"
+            MDLabel:
+                size_hint: .8, 1
+                text: " "+root.answer_a
+        BoxLayout:
             size_hint: 1, .25
-            icon: "data/images/icon_b.png"
-            text: root.answer_b
-            line_width: 1.5
-            icon_color: 0, .5, 0, 1
-        MDRectangleFlatIconButton:
+            orientation: 'horizontal'
+            MDIconButton:
+                icon: 'data/images/icon_b.png'
+            MDLabel:
+                size_hint: .8, 1
+                text: " "+root.answer_b
+        BoxLayout:
             size_hint: 1, .25
-            icon: "data/images/icon_c.png"
-            text: root.answer_c
-            line_width: 1.5
-            icon_color: 0, .5, 0, 1
-        MDRectangleFlatIconButton:
+            orientation: 'horizontal'
+            MDIconButton:
+                icon: "data/images/icon_c.png"
+            MDLabel:
+                size_hint: .8, 1
+                text: " "+root.answer_c
+        BoxLayout:
             size_hint: 1, .25
-            icon: "data/images/icon_d.png"
-            text: root.answer_d
-            line_width: 1.5
-            icon_color: 0, .5, 0, 1
+            orientation: 'horizontal'
+            MDIconButton:
+                icon: "data/images/icon_d.png"
+            MDLabel:
+                size_hint: .8, 1
+                text: " "+root.answer_d
     AnchorLayout:
         size_hint: 1, None
         height: dp(60)
@@ -287,11 +316,33 @@ WindowManager:
         size: dp(56), dp(56)
         opposite_colors: True
         md_bg_color_disabled: 0,0,0,0
-        disabled: 0,0,0,0
+        disabled_color: 0,0,0,0
         elevation_normal: 8
         pos_hint: {'center_x': .9, 'center_y': .1}
         disabled: root.disabled
         on_release: root.callback()
+
+<Report>:
+    FloatLayout:
+        GridLayout:
+            id: rep_show
+            size_hint: 1, 1
+            pos_hint: {"top": 1}
+            cols: 1
+            MyScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    MyImage:
+<MyImage>:
+    source: 'data/images/rep_8a.jpg'
+    allow_stretch: True
+    keep_ratio: True
+    size_hint: None, None
+    size: self.get_size_for_notebook()
 
 <CreateClass>:
     id: cr_class
@@ -329,7 +380,7 @@ WindowManager:
                             pos_hint: {'center_x': .77, 'center_y': .15}
                             background_color: get_color_from_hex("#4bb760")
                             background_color_down: get_color_from_hex("#3b934c")
-                            on_release: app.choice_avatar_class()
+                            on_release: app.file_manager_open()
 
                     BoxLayout:
                         orientation: 'vertical'
@@ -518,6 +569,10 @@ WindowManager:
                         BoxLayout:
                             size_hint: 1, .2
                             orientation: 'horizontal'
+                            MDIconButton:
+                                icon: "data/images/icon_a.png"
+                            BoxLayout:
+                                size_hint: .1, 1
                             MDTextField:
                                 icon_left: 'data/images/icon_a.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
@@ -540,6 +595,10 @@ WindowManager:
                         BoxLayout:
                             size_hint: 1, .2
                             orientation: 'horizontal'
+                            MDIconButton:
+                                icon: "data/images/icon_b.png"
+                            BoxLayout:
+                                size_hint: .1, 1
                             MDTextField:
                                 icon_left: 'data/images/icon_b.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
@@ -563,6 +622,10 @@ WindowManager:
                         BoxLayout:
                             size_hint: 1, .2
                             orientation: 'horizontal'
+                            MDIconButton:
+                                icon: "data/images/icon_c.png"
+                            BoxLayout:
+                                size_hint: .1, 1
                             MDTextField:
                                 icon_left: 'data/images/icon_c.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
@@ -585,6 +648,10 @@ WindowManager:
                         BoxLayout:
                             size_hint: 1, .2
                             orientation: 'horizontal'
+                            MDIconButton:
+                                icon: "data/images/icon_d.png"
+                            BoxLayout:
+                                size_hint: .1, 1
                             MDTextField:
                                 icon_left: 'data/images/icon_d.png'
                                 icon_left_color_focus: 0, 0.4, 0, 1
@@ -631,8 +698,61 @@ WindowManager:
                                 line_width: 2
                                 md_bg_color: 0, 0.5, 0, .25
                                 text: '[b]СОЗДАТЬ НАБОР[/b]'
-                                on_release: app.save_info_set()
+                                on_release: app.save_info_set(), app.change_screen('set_list')
 
                 MDBottomAppBar:
                     BoxLayout:
                         minimum_size: (root.width, 0.01*root.height)
+
+<ShowList>:
+    name: 'set_list'
+    id: show_list
+    GridLayout:
+        cols: 1
+        row_default_height: 60
+        padding: [10, 20, 10, 20]
+        BoxLayout:
+            padding: [0, 0, 0, 10]
+            pos_hint: {'center_x': .5, 'center_y': .95}
+            orientation: 'horizontal'
+            BoxLayout:
+                size_hint: .9, 1
+                orientation: 'vertical'
+                MDLabel:
+                    radius: [40, 40, 40, 40]
+                    md_bg_color: get_color_from_hex("#00bfaf")
+                    id: label
+                    font_style: 'H6'
+                    text: 'Изобразительное искусство'
+                    halign: 'center'
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: [0, 10, 0, 0]
+            BoxLayout:
+                orientation: 'vertical'
+                MDLabel:
+                    id: label
+                    font_style: 'H6'
+                    radius: [40, 40, 40, 40]
+                    md_bg_color: get_color_from_hex("#00bfaf")
+                    text: 'Тригонометрия'
+                    halign: 'center'
+
+        BoxLayout:
+        BoxLayout:
+        BoxLayout:
+        BoxLayout:
+        BoxLayout:
+
+    MDFloatingActionButton:
+        id: float_act_btn
+        icon: 'plus'
+        size_hint: None, None
+        size: dp(56), dp(56)
+        opposite_colors: True
+        md_bg_color_disabled: 0,0,0,0
+        disabled_color: 0,0,0,0
+        elevation_normal: 8
+        pos_hint: {'center_x': .9, 'center_y': .1}
+        disabled: root.disabled
+        on_release: root.callback()
